@@ -1,0 +1,30 @@
+{
+  "name": "brightbase",
+  "version": "0.0.3",
+  "description": "A Wrapper for Supabase",
+  "files": [
+    "dist/**/*"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brightsidedeveloper/brightbase"
+  },
+  "author": "BrightSideDevelopers",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.1",
+    "debug": "^4.3.6",
+    "react": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.12",
+    "@types/node": "^22.2.0",
+    "@types/react": "^18.3.3",
+    "typescript": "^4.0.0"
+  }
+}
