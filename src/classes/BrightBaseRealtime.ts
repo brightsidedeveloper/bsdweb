@@ -3,47 +3,73 @@ import brightBaseSingleton from './BrightBaseSingleton'
 
 const log = debug('brightbase:realtime')
 
-export default class BrightBaseRealtime {
+// Define a generic interface for event mapping
+interface EventMap {
+  [event: string]: unknown
+}
+
+export default class BrightBaseRealtime<T extends EventMap> {
+  name: string
+  status: 'SUBSCRIBED' | 'TIMED_OUT' | 'CLOSED' | 'CHANNEL_ERROR' = 'CLOSED'
   private channel: ReturnType<ReturnType<typeof brightBaseSingleton.getSupabase>['channel']>
-  private listeners: Record<string, ((data: unknown) => void)[]> = {}
+  private listeners: { [K in keyof T]?: ((data: T[K]) => void)[] } = {}
 
   constructor(channelName: string) {
+    this.name = channelName
     this.channel = brightBaseSingleton.getSupabase().channel(channelName)
     log('Channel created:', channelName)
   }
 
   // Subscribe to a channel
   subscribe() {
-    this.channel.subscribe((status) => log('Channel status: %s', status))
+    if (this.status === 'SUBSCRIBED') return () => this.unsubscribe()
 
-    this.channel.on('broadcast', { event: '*' }, (payload) => {
-      const { event, data } = payload
-      log('Received event:', event, data)
-      if (this.listeners[event]) {
-        this.listeners[event].forEach((callback) => callback(data))
-      }
-    })
+    if (this.status === 'CLOSED') this.channel = brightBaseSingleton.getSupabase().channel(this.name)
+
+    this.channel
+      .on('broadcast', { event: '*' }, ({ event, payload }) => {
+        log('Received event: %o', payload)
+        if (this.listeners[event]) {
+          log('Notifying %d listeners', this.listeners[event]!.length)
+          this.listeners[event]!.forEach((callback) => {
+            callback(payload)
+          })
+        }
+      })
+      .subscribe()
+
+    return () => this.unsubscribe()
   }
 
-  on(event: string, callback: (data: unknown) => void) {
+  on<K extends keyof T>(event: K, callback: (data: T[K]) => void) {
     if (!this.listeners[event]) {
       this.listeners[event] = []
     }
-    this.listeners[event].push(callback)
+    this.listeners[event]!.push(callback)
+    log('Subscribed to event: %s', event)
+
+    return () => this.off(event, callback)
   }
 
-  off(event: string, callback: (data: unknown) => void) {
-    if (!this.listeners[event]) {
-      return
-    }
-    this.listeners[event] = this.listeners[event].filter((cb) => cb !== callback)
+  off<K extends keyof T>(event: K, callback: (data: T[K]) => void) {
+    if (!this.listeners[event]) return log('No listeners for event: %s', event)
+    this.listeners[event] = this.listeners[event]!.filter((cb) => cb !== callback)
+    log('Unsubscribed from event: %s', event)
   }
 
-  emit(event: string, data: unknown) {
-    this.channel.send({ event, data, type: 'broadcast' })
+  emit<K extends string>(event: K, payload: T[K]) {
+    this.channel
+      .send({ event, payload, type: 'broadcast' })
+      .then(() => {
+        log('Sent event: %s %o', event, payload)
+      })
+      .catch((error) => {
+        log('Failed to send event: %s %o', event, error)
+      })
   }
 
   unsubscribe() {
     this.channel.unsubscribe()
+    this.status = 'CLOSED'
   }
 }
