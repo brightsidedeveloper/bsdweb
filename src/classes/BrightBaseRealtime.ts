@@ -1,14 +1,10 @@
 import debug from 'debug'
 import brightBaseSingleton from './BrightBaseSingleton'
+import { BrightBaseEvents } from 'src'
 
 const log = debug('brightbase:realtime')
 
-// Define a generic interface for event mapping
-interface EventMap {
-  [event: string]: unknown
-}
-
-export default class BrightBaseRealtime<T extends EventMap> {
+export default class BrightBaseRealtime<T extends BrightBaseEvents> {
   name: string
   status: 'SUBSCRIBED' | 'TIMED_OUT' | 'CLOSED' | 'CHANNEL_ERROR' = 'CLOSED'
   private channel: ReturnType<ReturnType<typeof brightBaseSingleton.getSupabase>['channel']>

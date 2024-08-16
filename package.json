@@ -1,6 +1,6 @@
 {
   "name": "brightbase",
-  "version": "0.0.15",
+  "version": "0.0.17",
   "description": "A Wrapper for Supabase",
   "files": [
     "dist/**/*"

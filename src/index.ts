@@ -8,3 +8,7 @@ function initBrightBase(supabaseUrl: string, supabaseKey: string) {
 }
 
 export { initBrightBase, BrightBaseAuth, BrightBaseCRUD, BrightBaseRealtime }
+
+export interface BrightBaseEvents {
+  [event: string]: unknown
+}

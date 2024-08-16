@@ -12,7 +12,7 @@
     "types": ["node", "@types/node"],
     "baseUrl": ".",
     "paths": {
-      "brightside/brightside-web": ["node_modules/brightside/brightside-web"]
+      "brightbase": ["node_modules/brightbase"]
     }
   },
   "include": ["src/**/*"],
