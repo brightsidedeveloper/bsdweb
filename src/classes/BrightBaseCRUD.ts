@@ -1,10 +1,11 @@
 import debug from "debug"
 import brightBaseSingleton from "./BrightBaseSingleton"
+import { BrightBaseCRUDTableRecordConstraint } from "src"
 
 const log = debug("brightbase:crud")
 
 export default class BrightBaseCRUD<
-  T extends TableRecord,
+  T extends BrightBaseCRUDTableRecordConstraint,
   K extends string = BaseCreateExclude,
   C extends Omit<T, K> = Omit<T, K>
 > {
@@ -105,9 +106,6 @@ export default class BrightBaseCRUD<
   }
 }
 
-export interface TableRecord {
-  [key: string]: unknown
-}
 interface ReadOptions {
   limit?: number
   offset?: number

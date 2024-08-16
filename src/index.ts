@@ -19,3 +19,6 @@ export {
 export interface BrightBaseRealtimeEventsConstraint {
   [event: string]: unknown
 }
+export interface BrightBaseCRUDTableRecordConstraint {
+  [key: string]: unknown
+}
