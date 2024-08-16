@@ -1,15 +1,15 @@
 import debug from "debug"
 import brightBaseSingleton from "./BrightBaseSingleton"
-import { BrightBaseCRUDTableRecordConstraint } from "src"
+import { BrightBaseCRUDTableRecord } from "src"
 
 const log = debug("brightbase:crud")
 
 export default class BrightBaseCRUD<
-  T extends BrightBaseCRUDTableRecordConstraint,
+  T extends BrightBaseCRUDTableRecord,
   K extends string = BaseCreateExclude,
   C extends Omit<T, K> = Omit<T, K>
 > {
-  private name: string
+  name: string
   private table: ReturnType<
     ReturnType<typeof brightBaseSingleton.getSupabase>["from"]
   >

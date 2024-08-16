@@ -8,6 +8,7 @@ function initBrightBase(supabaseUrl: string, supabaseKey: string) {
   brightBaseSingleton.initializeSupabase(supabaseUrl, supabaseKey)
 }
 
+// * Classes
 export {
   initBrightBase,
   BrightBaseAuth,
@@ -16,9 +17,15 @@ export {
   BrightBaseStorage,
 }
 
-export interface BrightBaseRealtimeEventsConstraint {
+// * Hooks
+export { default as useBrightSuspenseQuery } from "./hooks/crud/useBrightSuspenseQuery"
+
+// * Types
+
+// * Interfaces
+export interface BrightBaseRealtimeEvents {
   [event: string]: unknown
 }
-export interface BrightBaseCRUDTableRecordConstraint {
+export interface BrightBaseCRUDTableRecord {
   [key: string]: unknown
 }

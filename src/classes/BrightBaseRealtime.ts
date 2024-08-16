@@ -1,12 +1,10 @@
 import debug from "debug"
 import brightBaseSingleton from "./BrightBaseSingleton"
-import { BrightBaseRealtimeEventsConstraint } from "src"
+import { BrightBaseRealtimeEvents } from "src"
 
 const log = debug("brightbase:realtime")
 
-export default class BrightBaseRealtime<
-  T extends BrightBaseRealtimeEventsConstraint
-> {
+export default class BrightBaseRealtime<T extends BrightBaseRealtimeEvents> {
   name: string
   status: "SUBSCRIBED" | "TIMED_OUT" | "CLOSED" | "CHANNEL_ERROR" = "CLOSED"
   private channel: ReturnType<
