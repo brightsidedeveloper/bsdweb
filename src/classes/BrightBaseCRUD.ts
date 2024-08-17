@@ -4,14 +4,12 @@ import { BrightBaseCRUDTableRecord } from 'src'
 
 const log = debug('brightbase:crud')
 
-type CreateRecordType<Table extends BrightBaseCRUDTableRecord, Remove extends string, Optional extends string> = Omit<Table, Remove> &
-  Partial<Pick<Table, Optional>>
-
 export default class BrightBaseCRUD<
   T extends BrightBaseCRUDTableRecord,
-  N extends string = NotAllowedOnCreate,
-  O extends string = OptionalOnCreate,
-  C extends CreateRecordType<T, N, O> = CreateRecordType<T, N, O>
+  CreateOptions extends { notAllowedOnCreate: keyof T; optionalOnCreate: keyof T } = {
+    notAllowedOnCreate: 'id' | 'created_at'
+    optionalOnCreate: ''
+  }
 > {
   name: string
   private table: ReturnType<ReturnType<typeof brightBaseSingleton.getSupabase>['from']>
@@ -27,7 +25,10 @@ export default class BrightBaseCRUD<
   }
 
   // Create a new record
-  async create(record: C | C[]) {
+  async create<
+    C extends Omit<T, CreateOptions['notAllowedOnCreate'] | CreateOptions['optionalOnCreate']> &
+      Partial<Pick<T, CreateOptions['optionalOnCreate']>>
+  >(record: C | C[]) {
     this.reCreateTable()
     const { data, error } = await this.table.insert(record)
 
