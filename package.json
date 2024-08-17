@@ -1,7 +1,7 @@
 {
-  "name": "brightbase",
-  "version": "0.1.17",
-  "description": "A Wrapper for Supabase & TansStack React Query",
+  "name": "brightside-developer",
+  "version": "0.0.0",
+  "description": "API for BrightSideDeveloper",
   "files": [
     "dist/**/*"
   ],
@@ -20,7 +20,8 @@
     "@supabase/supabase-js": "^2.45.1",
     "@tanstack/react-query": "^5.51.23",
     "debug": "^4.3.6",
-    "react": "^18.3.1"
+    "react": "^18.3.1",
+    "react-hot-toast": "^2.4.1"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",

@@ -2,7 +2,7 @@ import debug from 'debug'
 import brightBaseSingleton from './BrightBaseSingleton'
 import { BrightBaseRealtimeEvents } from 'src'
 
-const log = debug('brightbase:realtime')
+const log = debug('brightside:brightbase:realtime')
 
 export default class BrightBaseRealtime<T extends BrightBaseRealtimeEvents> {
   name: string
@@ -24,7 +24,7 @@ export default class BrightBaseRealtime<T extends BrightBaseRealtimeEvents> {
 
     this.channel
       .on('broadcast', { event: '*' }, ({ event, payload }) => {
-        log('Received event: %o', payload)
+        log('%s received event: %o', this.name, payload)
         if (this.listeners[event]) {
           log('Notifying %d listeners', this.listeners[event]!.length)
           this.listeners[event]!.forEach((callback) => {
@@ -42,7 +42,7 @@ export default class BrightBaseRealtime<T extends BrightBaseRealtimeEvents> {
       this.listeners[event] = []
     }
     this.listeners[event]!.push(callback)
-    log('Subscribed to event: %s', event)
+    log('Subscribed to event: "%s" in %s', event, this.name)
 
     return () => this.off(event, callback)
   }
@@ -57,15 +57,16 @@ export default class BrightBaseRealtime<T extends BrightBaseRealtimeEvents> {
     this.channel
       .send({ event, payload, type: 'broadcast' })
       .then(() => {
-        log('Sent event: %s %o', event, payload)
+        log('Channel %s sent event: "%s": %o', this.name, event, payload)
       })
       .catch((error) => {
-        log('Failed to send event: %s %o', event, error)
+        log('Channel %s failed to send event: "%s": %o', this.name, event, error)
       })
   }
 
   unsubscribe() {
     this.channel.unsubscribe()
     this.status = 'CLOSED'
+    log('Unsubscribed from %s', this.name)
   }
 }

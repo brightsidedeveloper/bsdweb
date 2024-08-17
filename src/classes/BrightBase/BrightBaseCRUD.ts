@@ -2,13 +2,13 @@ import debug from 'debug'
 import brightBaseSingleton from './BrightBaseSingleton'
 import { BrightBaseCRUDTableRecord } from 'src'
 
-const log = debug('brightbase:crud')
+const log = debug('brightside:brightbase:crud')
 
 export default class BrightBaseCRUD<
   T extends BrightBaseCRUDTableRecord,
-  CreateOptions extends { notAllowedOnCreate: keyof T; optionalOnCreate: keyof T } = {
-    notAllowedOnCreate: 'id' | 'created_at'
-    optionalOnCreate: ''
+  CO extends { OmitOnCreate: keyof T; OptionalOnCreate: keyof T } = {
+    OmitOnCreate: OmitOnCreate
+    OptionalOnCreate: OptionalOnCreate
   }
 > {
   name: string
@@ -25,19 +25,16 @@ export default class BrightBaseCRUD<
   }
 
   // Create a new record
-  async create<
-    C extends Omit<T, CreateOptions['notAllowedOnCreate'] | CreateOptions['optionalOnCreate']> &
-      Partial<Pick<T, CreateOptions['optionalOnCreate']>>
-  >(record: C | C[]) {
+  async create<C extends Omit<T, CO['OmitOnCreate'] | CO['OptionalOnCreate']> & Partial<Pick<T, CO['OptionalOnCreate']>>>(record: C | C[]) {
     this.reCreateTable()
-    const { data, error } = await this.table.insert(record)
+    const { data, error } = await this.table.insert(record).select()
 
     if (error) {
-      log('Error creating record:', error.message)
+      log('Error creating record in table "%s": %s', this.name, error.message)
       throw new Error(error.message)
     }
-    log('Record created: ', record)
-    return data
+    log('Record created in table "%s": ', this.name, record)
+    return data as T[]
   }
 
   // Read records
@@ -60,13 +57,13 @@ export default class BrightBaseCRUD<
     const { data, error } = await query
 
     if (error) {
-      log('Error reading records:', error.message)
+      log('Error reading records in table "%s": %s', this.name, error.message)
       throw new Error(error.message)
     }
 
     if (!data) throw Error('No Data was found.')
 
-    log('Records read:', data)
+    log('Records with filters: %o, options: %o, from "%s" table:', filters, options, this.name, data)
 
     return data as T[]
   }
@@ -76,15 +73,15 @@ export default class BrightBaseCRUD<
     this.reCreateTable()
     const query = this.table.update(updates).eq('id', id)
 
-    const { data, error } = await query
+    const { data, error } = await query.select()
 
     if (error) {
-      log('Error updating record: %s', id, '\n', error.message)
+      log('Error updating record with id: "%s" in table "%s"', id, this.name, '\n', error.message)
       throw new Error(error.message)
     }
 
-    log('Record updated:', id, updates)
-    return data
+    log('Record(s) in "%s" table updated:', data)
+    return data as T[]
   }
 
   // Delete records
@@ -111,5 +108,5 @@ interface ReadOptions {
   order?: { by: string; ascending: boolean }
 }
 
-type NotAllowedOnCreate = 'id' | 'created_at'
+type OmitOnCreate = 'id' | 'created_at'
 type OptionalOnCreate = ''
