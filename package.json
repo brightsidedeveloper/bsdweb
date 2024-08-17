@@ -1,6 +1,6 @@
 {
   "name": "brightside-developer",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "API for BrightSideDeveloper",
   "files": [
     "dist/**/*"
@@ -27,6 +27,7 @@
     "@types/debug": "^4.1.12",
     "@types/node": "^22.2.0",
     "@types/react": "^18.3.3",
+    "typedoc": "^0.26.5",
     "typescript": "^5.5.3"
   }
 }

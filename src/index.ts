@@ -5,26 +5,20 @@ import BrightBaseRealtime from './classes/BrightBase/BrightBaseRealtime'
 import BrightBaseStorage from './classes/BrightBase/BrightBaseStorage'
 import BrightWebTheme from './classes/BrightWeb/BrightWebTheme'
 
-function initBrightBase(supabaseUrl: string, supabaseKey: string) {
+export function initBrightBase(supabaseUrl: string, supabaseKey: string) {
   brightBaseSingleton.initialize(supabaseUrl, supabaseKey)
 }
 
+// * Dependencies
+export * from '@tanstack/react-query'
+
 // * Classes
-export { initBrightBase, BrightBaseAuth, BrightBaseCRUD, BrightBaseRealtime, BrightBaseStorage }
+export { BrightBaseAuth, BrightBaseCRUD, BrightBaseRealtime, BrightBaseStorage }
 export { BrightWebTheme }
 
 // * Context
-export * from '@tanstack/react-query'
-export { default as BrightQueryProvider } from './context/BrightProvider'
+export { default as BrightProvider } from './context/BrightProvider'
 
+// * Utils
 export { default as wetToast } from './utils/wetToast'
 export { toast } from 'react-hot-toast'
-
-// * Hooks
-
-// * Types
-
-// * Interfaces
-
-export { BrightBaseCRUDTableRecord } from './types/crud'
-export { BrightBaseRealtimeEvents } from './types/realtime'

@@ -3,3 +3,4 @@ src/
 *.tsx
 *.json
 node_modules/
+docs/

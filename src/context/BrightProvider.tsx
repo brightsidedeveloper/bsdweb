@@ -5,12 +5,8 @@ import { Toaster } from 'react-hot-toast'
 // Create a new QueryClient instance
 const queryClient = new QueryClient()
 
-interface BrightProviderProps {
-  children: React.ReactNode
-}
-
 // Custom provider that wraps QueryClientProvider
-export default function BrightProvider({ children }: BrightProviderProps) {
+export default function BrightProvider({ children }: { children: React.ReactNode }) {
   return (
     <>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

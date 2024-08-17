@@ -1,10 +1,9 @@
 import debug from 'debug'
 import brightBaseSingleton from './BrightBaseSingleton'
-import { BrightBaseRealtimeEvents } from 'src'
 
 const log = debug('brightside:brightbase:realtime')
 
-export default class BrightBaseRealtime<T extends BrightBaseRealtimeEvents> {
+export default class BrightBaseRealtime<T extends { [key: string]: unknown }> {
   name: string
   status: 'SUBSCRIBED' | 'TIMED_OUT' | 'CLOSED' | 'CHANNEL_ERROR' = 'CLOSED'
   private channel: ReturnType<ReturnType<typeof brightBaseSingleton.getSupabase>['channel']>
