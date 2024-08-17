@@ -1,6 +1,6 @@
 # BrightSide Developer
 
-BrightSide Developer is a TypeScript package designed to provide an easy-to-use interface for interacting with Supabase. It includes utilities for authentication, CRUD operations, real-time updates, and theming, making it a versatile tool for developers working with Supabase in their React applications.
+BrightSide Developer is a TypeScript package designed to provide an easy-to-use interface for interacting with Supabase, leveraging TanStack Query and many other useful tools for build scalable projects fast!. It includes utilities for authentication, CRUD operations, real-time updates, and theming, making it a versatile tool for developers working with Supabase in their React applications.
 
 ## Table of Contents
 
