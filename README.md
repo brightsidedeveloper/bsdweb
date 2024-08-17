@@ -24,7 +24,7 @@ To install BrightSide Developer, simply run:
 npm install brightside-developer
 ```
 
-See typedoc here: https://brightside-developer-docs.vercel.app
+See typedoc here: [TypeDoc](https://brightside-developer-docs.vercel.app)
 
 ## Features
 
@@ -35,17 +35,17 @@ Before using any of the BrightBase features, you need to initialize it with your
 ```typescript
 import { initBrightBase } from 'brightside-developer'
 
-const SUPABASE_URL = 'https://your-supabase-url'
+const SUPABASE_URL = 'https://your-supabase-url.co'
 const SUPABASE_ANON_KEY = 'your-anon-key'
 
 initBrightBase(SUPABASE_URL, SUPABASE_ANON_KEY)
+```
 
 ### Authentication
 
 BrightBaseAuth provides methods for handling user authentication, including signing up, signing in, and managing user sessions. It supports multiple authentication methods like email/password and OAuth providers such as Google and Apple.
 
 #### Example
-```
 
 ```typescript
 import { BrightBaseAuth } from 'brightside-developer'
@@ -53,21 +53,23 @@ import { BrightBaseAuth } from 'brightside-developer'
 const auth = new BrightBaseAuth()
 
 // Sign up with email and password
-auth.signUpWithEmail('user@example.com', 'password123')
-  .then(user => console.log(user))
-  .catch(err => console.error(err))
+auth
+  .signUpWithEmail('user@example.com', 'password123')
+  .then((user) => console.log(user))
+  .catch((err) => console.error(err))
 
 // Sign in with Google
-auth.signInWithGoogle()
-  .then(user => console.log(user))
-  .catch(err => console.error(err))
+auth
+  .signInWithGoogle()
+  .then((user) => console.log(user))
+  .catch((err) => console.error(err))
+```
 
 ### CRUD Operations
 
 BrightBaseCRUD simplifies interacting with Supabase tables by providing a clean interface for performing Create, Read, Update, and Delete operations.
 
 #### Example
-```
 
 ```typescript
 interface Todo {
@@ -222,10 +224,6 @@ function Realtime() {
 
 ### Contributing
 
-Contributions are welcome! If you find a bug or have a feature request, please open an issue on the [GitHub repository](https://github.com/yourusername/brightside-developer).
+Contributions are welcome! If you find a bug or have a feature request, please open an issue on the [GitHub repository](https://github.com/brightsidedeveloper/brightside-developer).
 
 If you'd like to contribute code, please fork the repository, make your changes in a new branch, and submit a pull request. Be sure to include tests for any new features or changes to existing code.
-
-### License
-
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/yourusername/brightside-developer/blob/main/LICENSE) file for details.
