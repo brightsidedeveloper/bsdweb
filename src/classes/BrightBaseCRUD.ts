@@ -9,9 +9,9 @@ type CreateRecordType<Table extends BrightBaseCRUDTableRecord, Remove extends st
 
 export default class BrightBaseCRUD<
   T extends BrightBaseCRUDTableRecord,
-  K extends string = 'id' | 'created_at',
-  P extends string = '',
-  C extends CreateRecordType<T, K, P> = CreateRecordType<T, K, P>
+  N extends string = NotAllowedOnCreate,
+  O extends string = OptionalOnCreate,
+  C extends CreateRecordType<T, N, O> = CreateRecordType<T, N, O>
 > {
   name: string
   private table: ReturnType<ReturnType<typeof brightBaseSingleton.getSupabase>['from']>
@@ -110,4 +110,5 @@ interface ReadOptions {
   order?: { by: string; ascending: boolean }
 }
 
-type BaseCreateExclude = 'id' | 'created_at'
+type NotAllowedOnCreate = 'id' | 'created_at'
+type OptionalOnCreate = ''
