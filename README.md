@@ -211,12 +211,14 @@ function CRUD() {
   )
 }
 
-function Realtime() {
-  const channel = new BrightBaseRealtime<{ message: string }>('room1')
+const channel = new BrightBaseRealtime<{ message: string }>('room1')
 
+function Realtime() {
+  useEffect(() => channel.subscribe(), [])
+  useEffect(() => channel.on('message', (msg) => alert(msg)), [])
   return (
     <div>
-      <button onClick={() => channel.emit('message', { message: 'Hello, world!' })}>Send Message</button>
+      <button onClick={() => channel.emit('message', 'Hello, world!')}>Send Message</button>
     </div>
   )
 }
