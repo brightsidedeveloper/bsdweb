@@ -11,7 +11,7 @@ class BrightBaseSingleton {
     BrightBaseSingleton.instance = this
   }
 
-  initializeSupabase(supabaseUrl: string, supabaseKey: string) {
+  initialize(supabaseUrl: string, supabaseKey: string) {
     if (this.supabase) return
     this.supabase = createClient(supabaseUrl, supabaseKey)
   }

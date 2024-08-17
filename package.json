@@ -1,7 +1,7 @@
 {
   "name": "brightbase",
-  "version": "0.1.5",
-  "description": "A Wrapper for Supabase",
+  "version": "0.1.17",
+  "description": "A Wrapper for Supabase & TansStack React Query",
   "files": [
     "dist/**/*"
   ],
@@ -26,6 +26,6 @@
     "@types/debug": "^4.1.12",
     "@types/node": "^22.2.0",
     "@types/react": "^18.3.3",
-    "typescript": "^4.0.0"
+    "typescript": "^5.5.3"
   }
 }
