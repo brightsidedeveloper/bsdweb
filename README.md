@@ -41,6 +41,25 @@ const SUPABASE_ANON_KEY = 'your-anon-key'
 initBrightBase(SUPABASE_URL, SUPABASE_ANON_KEY)
 ```
 
+Also, for wetToast, TanStack query, and the useCreateQuery / useInvalidateQuery hooks to work,
+they must be wrapped used as children within the BrightProvider.
+
+```typescript
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
+import { BrightProvider } from 'brightside-developer'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <BrightProvider>
+      <App />
+    </BrightProvider>
+  </StrictMode>
+)
+```
+
 ### Authentication
 
 BrightBaseAuth provides methods for handling user authentication, including signing up, signing in, and managing user sessions. It supports multiple authentication methods like email/password and OAuth providers such as Google and Apple.
@@ -48,7 +67,7 @@ BrightBaseAuth provides methods for handling user authentication, including sign
 #### Example
 
 ```typescript
-import { BrightBaseAuth } from 'brightside-developer'
+import { BrightBaseAuth, useNavigate } from 'brightside-developer'
 
 const auth = new BrightBaseAuth()
 
@@ -63,6 +82,9 @@ auth
   .signInWithGoogle()
   .then((user) => console.log(user))
   .catch((err) => console.error(err))
+
+// Sign Out
+auth.signOut().then(() => useNavigate({ to: '/sign-in' +}))
 ```
 
 ### CRUD Operations
@@ -192,8 +214,9 @@ export default function App() {
   )
 }
 
+const todosTable = new BrightBaseCRUD<{ id: string; todo: string; done: boolean }>('todos')
+
 function CRUD() {
-  const todosTable = new BrightBaseCRUD<{ id: string; todo: string; done: boolean }>('todos')
   const [text, setText] = useState('')
 
   const createTodo = useCallback(() => {
