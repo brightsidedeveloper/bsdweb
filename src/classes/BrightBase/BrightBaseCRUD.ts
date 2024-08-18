@@ -99,7 +99,7 @@ export default class BrightBaseCRUD<
       query = query.order(options.order.by, {
         ascending: options.order.ascending,
       })
-    }
+    } else query = query.order('created_at', { ascending: false })
 
     const { data, error } = await query
 
@@ -110,7 +110,7 @@ export default class BrightBaseCRUD<
 
     if (!data) throw Error('No Data was found.')
 
-    log('Records with filters: %o, options: %o, from "%s" table:', filters, options, this.name, data)
+    log('Read records from "%s" table with these filters and options: %o \n Data: %o', this.name, { filters, options }, data)
 
     return data as TableRecord[]
   }
@@ -135,7 +135,7 @@ export default class BrightBaseCRUD<
       throw new Error(error.message)
     }
 
-    log('Record(s) in "%s" table updated:', data)
+    log('Record(s) in "%s" table updated: %o', this.name, data)
     return data as TableRecord[]
   }
 

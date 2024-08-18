@@ -5,7 +5,7 @@ export default function wetToast(message: Parameters<typeof toast>[0], opts?: To
     ...opts,
     style: {
       background: 'var(--background)',
-      color: 'var(--text)',
+      color: 'var(--foreground)',
       border: '1px solid var(--border)',
       ...opts?.style,
     },

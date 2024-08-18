@@ -12,7 +12,7 @@ export default class BrightBaseRealtime<T extends { [key: string]: unknown }> {
   constructor(channelName: string) {
     this.name = channelName
     this.channel = brightBaseSingleton.getSupabase().channel(channelName)
-    log('Channel created:', channelName)
+    log('Channel created: "%s"', channelName)
   }
 
   // Subscribe to a channel
@@ -23,9 +23,9 @@ export default class BrightBaseRealtime<T extends { [key: string]: unknown }> {
 
     this.channel
       .on('broadcast', { event: '*' }, ({ event, payload }) => {
-        log('%s received event: %o', this.name, payload)
+        log('"%s" channel received event: "%s": %o', this.name, event, payload)
         if (this.listeners[event]) {
-          log('Notifying %d listeners', this.listeners[event]!.length)
+          log('Notifying %d listeners of "%s" event in "%s" channel', this.listeners[event]!.length, event, this.name)
           this.listeners[event]!.forEach((callback) => {
             callback(payload)
           })
@@ -41,13 +41,13 @@ export default class BrightBaseRealtime<T extends { [key: string]: unknown }> {
       this.listeners[event] = []
     }
     this.listeners[event]!.push(callback)
-    log('Subscribed to event: "%s" in %s', event, this.name)
+    log('"%s" channel subscribed to event: "%s"', this.name, event)
 
     return () => this.off(event, callback)
   }
 
   off<K extends keyof T>(event: K, callback: (data: T[K]) => void) {
-    if (!this.listeners[event]) return log('No listeners for event: %s', event)
+    if (!this.listeners[event]) return log('No listeners for event %s in "%s" channel', event, this.name)
     this.listeners[event] = this.listeners[event]!.filter((cb) => cb !== callback)
     log('Unsubscribed from event: %s', event)
   }
@@ -56,10 +56,10 @@ export default class BrightBaseRealtime<T extends { [key: string]: unknown }> {
     this.channel
       .send({ event, payload, type: 'broadcast' })
       .then(() => {
-        log('Channel %s sent event: "%s": %o', this.name, event, payload)
+        log('Channel "%s" sent event: "%s": %o', this.name, event, payload)
       })
       .catch((error) => {
-        log('Channel %s failed to send event: "%s": %o', this.name, event, error)
+        log('Channel "%s" failed to send event: "%s": %o', this.name, event, error)
       })
   }
 

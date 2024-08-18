@@ -12,13 +12,14 @@ class BrightBaseSingleton {
       log('Returning existing instance')
       return BrightBaseSingleton.instance
     }
-    log('Creating new instance')
     BrightBaseSingleton.instance = this
+    log('Created singleton instance of BrightBase')
   }
 
   initialize(supabaseUrl: string, supabaseKey: string) {
     if (this.supabase) return log('Supabase already initialized')
     this.supabase = createClient(supabaseUrl, supabaseKey)
+    log('Supabase initialized')
   }
 
   getSupabase() {
