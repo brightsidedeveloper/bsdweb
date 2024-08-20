@@ -7,9 +7,9 @@ export default class BrightWebTheme {
    * Initialize the theme from local storage (which falls back to system preference)
    */
   static initializeTheme() {
-    const theme = this.getLocalTheme()
+    const theme = BrightWebTheme.getLocalTheme()
     log('Initializing theme: %s', theme)
-    this.setTheme(theme)
+    BrightWebTheme.setTheme(theme)
   }
 
   /**
@@ -37,7 +37,7 @@ export default class BrightWebTheme {
     if (!choice) localStorage.removeItem('theme')
     else localStorage.setItem('theme', choice)
     // Check if the user has a preference for dark mode (if not set)
-    if (!choice && this.getSystemPrefersDark()) choice = 'dark'
+    if (!choice && BrightWebTheme.getSystemPrefersDark()) choice = 'dark'
 
     const htmlClassList = document.documentElement.classList
 
@@ -49,8 +49,8 @@ export default class BrightWebTheme {
    * @returns a cleanup function to remove the event listener
    */
   static storageThemeEventListener() {
-    window.addEventListener('storage', this.initializeTheme)
-    return () => window.removeEventListener('storage', this.initializeTheme)
+    window.addEventListener('storage', BrightWebTheme.initializeTheme)
+    return () => window.removeEventListener('storage', BrightWebTheme.initializeTheme)
   }
 
   /**
@@ -59,7 +59,7 @@ export default class BrightWebTheme {
    */
   static mediaThemeEventListener() {
     const media = matchMedia('(prefers-color-scheme: dark)')
-    media.addEventListener('change', this.initializeTheme)
-    return () => media.removeEventListener('change', this.initializeTheme)
+    media.addEventListener('change', BrightWebTheme.initializeTheme)
+    return () => media.removeEventListener('change', BrightWebTheme.initializeTheme)
   }
 }
