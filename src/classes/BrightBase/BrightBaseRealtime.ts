@@ -16,7 +16,14 @@ export default class BrightBaseRealtime<T extends { [event: string]: { [key: str
   }
 
   first(callback: () => void): this {
-    callback()
+    try {
+      callback()
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new Error(err.message)
+      }
+      throw new Error('Unknown error')
+    }
     return this
   }
 

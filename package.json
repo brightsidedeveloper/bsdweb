@@ -1,6 +1,6 @@
 {
   "name": "bsdweb",
-  "version": "0.0.9",
+  "version": "0.0.13",
   "description": "Web API for BrightSideDevelopers catered towards Supabase, React Query, and TailwindCSS",
   "files": [
     "dist/**/*"
@@ -25,7 +25,8 @@
     "debug": "^4.3.6",
     "react": "^18.3.1",
     "react-hot-toast": "^2.4.1",
-    "tailwind-merge": "^2.5.2"
+    "tailwind-merge": "^2.5.2",
+    "tus-js-client": "^4.1.0"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",

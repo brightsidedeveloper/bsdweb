@@ -31,7 +31,14 @@ export default class BrightBaseCRUD<
   }
 
   first(callback: () => void): this {
-    callback()
+    try {
+      callback()
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new Error(err.message)
+      }
+      throw new Error('Unknown error')
+    }
     return this
   }
 

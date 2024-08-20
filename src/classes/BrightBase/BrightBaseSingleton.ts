@@ -6,6 +6,7 @@ const log = debug('brightside:brightbase:singleton')
 class BrightBaseSingleton {
   static instance: BrightBaseSingleton
   private supabase: SupabaseClient | null = null
+  private supabaseUrl: string | null = null
 
   constructor() {
     if (BrightBaseSingleton.instance) {
@@ -19,6 +20,7 @@ class BrightBaseSingleton {
   initialize(supabaseUrl: string, supabaseKey: string) {
     if (this.supabase) return log('Supabase already initialized')
     this.supabase = createClient(supabaseUrl, supabaseKey)
+    this.supabaseUrl = supabaseUrl
     log('Supabase initialized')
   }
 
@@ -28,6 +30,14 @@ class BrightBaseSingleton {
       throw new Error('Supabase not initialized')
     }
     return this.supabase
+  }
+
+  getSupabaseUrl() {
+    if (!this.supabaseUrl) {
+      log('Supabase URL not initialized')
+      throw new Error('Supabase URL not initialized')
+    }
+    return this.supabaseUrl
   }
 }
 
