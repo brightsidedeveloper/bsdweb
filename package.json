@@ -1,6 +1,6 @@
 {
   "name": "bsdweb",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Web API for BrightSideDevelopers catered towards Supabase, React Query, and TailwindCSS",
   "files": [
     "dist/**/*"
