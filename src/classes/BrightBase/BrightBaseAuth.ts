@@ -8,6 +8,11 @@ export default class BrightBaseAuth {
     this.auth = brightBaseSingleton.getSupabase().auth
   }
 
+  first(callback: () => void): this {
+    callback()
+    return this
+  }
+
   // Sign up with email and password
   async signUpWithEmail(email: string, password: string) {
     const { data, error } = await this.auth.signUp({

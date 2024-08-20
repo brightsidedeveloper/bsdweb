@@ -15,6 +15,11 @@ export default class BrightBaseRealtime<T extends { [event: string]: { [key: str
     log('Channel created: "%s"', channelName)
   }
 
+  first(callback: () => void): this {
+    callback()
+    return this
+  }
+
   // Subscribe to a channel
   subscribe() {
     if (this.status === 'SUBSCRIBED') return () => this.unsubscribe()

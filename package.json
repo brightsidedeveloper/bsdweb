@@ -1,7 +1,7 @@
 {
-  "name": "brightside-developer",
-  "version": "0.0.18",
-  "description": "API for BrightSideDeveloper",
+  "name": "bsdweb",
+  "version": "0.0.7",
+  "description": "Web API for BrightSideDevelopers catered towards Supabase, React Query, and TailwindCSS",
   "files": [
     "dist/**/*"
   ],

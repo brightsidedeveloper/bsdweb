@@ -4,7 +4,7 @@ export default function wetToast(message: Parameters<typeof toast>[0], opts?: To
   return toast(message, {
     ...opts,
     style: {
-      background: 'var(--background)',
+      background: 'var(--card)',
       color: 'var(--foreground)',
       border: '1px solid var(--border)',
       ...opts?.style,

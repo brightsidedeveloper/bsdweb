@@ -3,6 +3,7 @@ import BrightBaseAuth from './classes/BrightBase/BrightBaseAuth'
 import BrightBaseCRUD from './classes/BrightBase/BrightBaseCRUD'
 import BrightBaseRealtime from './classes/BrightBase/BrightBaseRealtime'
 import BrightBaseStorage from './classes/BrightBase/BrightBaseStorage'
+import BrightBaseEdge from './classes/BrightBase/BrightBaseEdge'
 import BrightWebTheme from './classes/BrightWeb/BrightWebTheme'
 import clsx from 'clsx'
 
@@ -15,7 +16,7 @@ export * from '@tanstack/react-query'
 export { clsx as tw }
 
 // * Classes
-export { BrightBaseAuth, BrightBaseCRUD, BrightBaseRealtime, BrightBaseStorage }
+export { BrightBaseAuth, BrightBaseCRUD, BrightBaseRealtime, BrightBaseStorage, BrightBaseEdge }
 export { BrightWebTheme }
 
 // * Context

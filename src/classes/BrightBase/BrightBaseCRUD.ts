@@ -30,6 +30,11 @@ export default class BrightBaseCRUD<
     log('Table created:', tableName)
   }
 
+  first(callback: () => void): this {
+    callback()
+    return this
+  }
+
   /**
    * Recreates the table instance.
    * @private
