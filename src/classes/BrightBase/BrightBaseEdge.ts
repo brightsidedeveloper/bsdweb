@@ -8,15 +8,8 @@ export default class BrightBaseEdge<T extends { [funcName: string]: { [key: stri
   }
 
   first(callback: () => void): this {
-    try {
-      callback()
-    } catch (err) {
-      if (err instanceof Error) {
-        throw new Error(err.message)
-      }
-      throw new Error('Unknown error')
-    }
-    return this
+    callback() // Executes synchronously
+    return this // Returns the instance for chaining
   }
 
   async invoke<K extends keyof T>(functionName: K, payload: T[K]) {

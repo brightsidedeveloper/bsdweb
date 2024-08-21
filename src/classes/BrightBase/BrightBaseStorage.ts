@@ -1,6 +1,5 @@
 import debug from 'debug'
 import brightBaseSingleton from './BrightBaseSingleton'
-import { Upload } from 'tus-js-client'
 
 const log = debug('brightbase:storage')
 
@@ -21,14 +20,7 @@ export default class BrightBaseStorage {
   }
 
   first(callback: () => void): this {
-    try {
-      callback()
-    } catch (err) {
-      if (err instanceof Error) {
-        throw new Error(err.message)
-      }
-      throw new Error('Unknown error')
-    }
+    callback()
     return this
   }
 
@@ -48,66 +40,26 @@ export default class BrightBaseStorage {
   }
 
   /**
-   * Uploads a file to the specified path in the bucket with progress tracking using tus-js-client.
+   * Uploads a file to the specified path in the bucket.
    * @param {string} path - The path where the file will be stored in the bucket.
    * @param {File | Blob} file - The file or blob to upload.
-   * @param {(progress: number) => void} [onProgress] - Optional callback function to track upload progress.
    * @returns {Promise<string>} The public URL of the uploaded file.
    * @throws {Error} If there is an error during the upload.
    * @example
-   * storage.uploadFile('folder/my-file.txt', fileBlob, (progress) => console.log('Progress:', progress))
-   *   .then(url => console.log(url))
-   *   .catch(err => console.error(err))
+   * storage.uploadFile('folder/my-file.txt', fileBlob).then(url => console.log(url)).catch(err => console.error(err))
    */
-  async uploadFile(path: string, file: File | Blob, onProgress?: (progress: number) => void): Promise<string> {
-    const {
-      data: { session },
-    } = await brightBaseSingleton.getSupabase().auth.getSession()
-    if (!session) throw new Error('User must be authenticated to upload files')
-    return new Promise((resolve, reject) => {
-      const upload = new Upload(file, {
-        endpoint: `${brightBaseSingleton.getSupabaseUrl()}/storage/v1/upload/resumable`,
-        retryDelays: [0, 3000, 5000, 10000, 20000],
-        headers: {
-          authorization: `Bearer ${session.access_token}`,
-          'x-upsert': 'true', // Optionally set upsert to true to overwrite existing files
-        },
-        uploadDataDuringCreation: true,
-        removeFingerprintOnSuccess: true,
-        metadata: {
-          bucketName: this.bucketName,
-          objectName: path,
-          contentType: file.type || 'application/octet-stream',
-          cacheControl: '3600',
-        },
-        chunkSize: 6 * 1024 * 1024, // Must be set to 6MB
-        onError: function (error) {
-          log('Upload failed:', error)
-          reject(error)
-        },
-        onProgress: function (bytesUploaded, bytesTotal) {
-          const percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2)
-          log('Upload progress:', percentage + '%')
-          if (onProgress) onProgress(Number(percentage))
-        },
-        onSuccess: () => {
-          const publicUrl = this.getPublicUrl(path)
-          log('File uploaded to bucket "%s" at path "%s". Public URL: %s', this.bucketName, path, publicUrl)
-          resolve(publicUrl)
-        },
-      })
+  async uploadFile(path: string, file: File | Blob): Promise<string> {
+    const { error } = await this.storage.from(this.bucketName).upload(path, file)
 
-      // Check if there are any previous uploads to continue.
-      upload.findPreviousUploads().then(function (previousUploads) {
-        // Found previous uploads so we select the first one.
-        if (previousUploads.length) {
-          upload.resumeFromPreviousUpload(previousUploads[0])
-        }
+    if (error) {
+      log('Error uploading file to bucket "%s": %s', this.bucketName, error.message)
+      throw new Error(error.message)
+    }
 
-        // Start the upload
-        upload.start()
-      })
-    })
+    const publicUrl = this.getPublicUrl(path)
+    log('File uploaded to bucket "%s" at path "%s". Public URL: %s', this.bucketName, path, publicUrl)
+
+    return publicUrl
   }
 
   /**

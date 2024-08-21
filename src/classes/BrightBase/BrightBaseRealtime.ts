@@ -16,15 +16,8 @@ export default class BrightBaseRealtime<T extends { [event: string]: { [key: str
   }
 
   first(callback: () => void): this {
-    try {
-      callback()
-    } catch (err) {
-      if (err instanceof Error) {
-        throw new Error(err.message)
-      }
-      throw new Error('Unknown error')
-    }
-    return this
+    callback() // Executes synchronously
+    return this // Returns the instance for chaining
   }
 
   // Subscribe to a channel

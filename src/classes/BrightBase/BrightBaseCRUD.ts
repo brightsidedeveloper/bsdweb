@@ -1,5 +1,6 @@
 import debug from 'debug'
 import brightBaseSingleton from './BrightBaseSingleton'
+import { ZodSchema } from 'zod'
 
 const log = debug('brightside:brightbase:crud')
 
@@ -31,15 +32,8 @@ export default class BrightBaseCRUD<
   }
 
   first(callback: () => void): this {
-    try {
-      callback()
-    } catch (err) {
-      if (err instanceof Error) {
-        throw new Error(err.message)
-      }
-      throw new Error('Unknown error')
-    }
-    return this
+    callback() // Executes synchronously
+    return this // Returns the instance for chaining
   }
 
   /**
@@ -61,7 +55,8 @@ export default class BrightBaseCRUD<
   async create<
     CreateTableRecord extends Omit<TableRecord, CreateOptions['OmitOnCreate'] | CreateOptions['OptionalOnCreate']> &
       Partial<Pick<TableRecord, CreateOptions['OptionalOnCreate']>>
-  >(record: CreateTableRecord | CreateTableRecord[]) {
+  >(record: CreateTableRecord | CreateTableRecord[], schema?: ZodSchema<unknown>) {
+    if (schema) schema.parse(record)
     this.reCreateTable()
     const { data, error } = await this.table.insert(record).select()
 
@@ -136,7 +131,8 @@ export default class BrightBaseCRUD<
    * @example
    * userTable.update('id_of_record', { name: 'Jane Doe' }).then((users) => console.log(users)).catch(err => wetToast(err.message, { icon: '❌' })
    */
-  async update(id: TableRecord['id'], updates: Partial<TableRecord>) {
+  async update(id: TableRecord['id'], updates: Partial<TableRecord>, schema?: ZodSchema<unknown>) {
+    if (schema) schema.parse(updates)
     this.reCreateTable()
     const query = this.table.update(updates).eq('id', id)
 
