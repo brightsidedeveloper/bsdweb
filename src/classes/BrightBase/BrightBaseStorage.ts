@@ -43,6 +43,7 @@ export default class BrightBaseStorage {
    * Uploads a file to the specified path in the bucket.
    * @param {string} path - The path where the file will be stored in the bucket.
    * @param {File | Blob} file - The file or blob to upload.
+   * @param {{ upsert?: boolean }} [opts] - Optional parameters.
    * @returns {Promise<string>} The public URL of the uploaded file.
    * @throws {Error} If there is an error during the upload.
    * @example
