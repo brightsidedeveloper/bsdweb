@@ -48,8 +48,8 @@ export default class BrightBaseStorage {
    * @example
    * storage.uploadFile('folder/my-file.txt', fileBlob).then(url => console.log(url)).catch(err => console.error(err))
    */
-  async uploadFile(path: string, file: File | Blob): Promise<string> {
-    const { error } = await this.storage.from(this.bucketName).upload(path, file)
+  async uploadFile(path: string, file: File | Blob, opts: { upsert?: boolean }): Promise<string> {
+    const { error } = await this.storage.from(this.bucketName).upload(path, file, opts)
 
     if (error) {
       log('Error uploading file to bucket "%s": %s', this.bucketName, error.message)
