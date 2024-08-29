@@ -30,9 +30,14 @@ export default class BrightBaseAuth {
    *   .then(data => console.log('Signed up:', data))
    *   .catch(error => console.error('Signup error:', error.message));
    */
-  async signUpWithEmail(params: { email: string; password: string }, schema?: ZodSchema<unknown>) {
+  async signUpWithEmail(params: { email: string; password: string }, schema?: ZodSchema<unknown>, options?: { redirectTo?: string }) {
     if (schema) schema.parse(params)
-    const { data, error } = await this.auth.signUp(params)
+    const { data, error } = await this.auth.signUp({
+      ...params,
+      options: {
+        emailRedirectTo: options?.redirectTo,
+      },
+    })
 
     if (error) {
       throw new Error(error.message)
@@ -119,9 +124,11 @@ export default class BrightBaseAuth {
    *   .then(data => console.log('Password reset email sent:', data))
    *   .catch(error => console.error('Password reset error:', error.message));
    */
-  async resetPassword(params: { email: string }, schema?: ZodSchema<unknown>) {
+  async resetPassword(params: { email: string }, schema?: ZodSchema<unknown>, options?: { redirectTo?: string }) {
     if (schema) schema.parse(params)
-    const { data, error } = await this.auth.resetPasswordForEmail(params.email)
+    const { data, error } = await this.auth.resetPasswordForEmail(params.email, {
+      redirectTo: options?.redirectTo,
+    })
 
     if (error) {
       throw new Error(error.message)
