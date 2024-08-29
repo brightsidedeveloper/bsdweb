@@ -32,6 +32,11 @@ export default class BrightBaseFunctions<
     this.functions = this.initializeFunctions(funcs)
   }
 
+  first(callback: () => void) {
+    callback() // Executes synchronously
+    return this.functions // Returns the instance for chaining
+  }
+
   /**
    * Initializes the RPC functions dynamically based on the type T.
    */
