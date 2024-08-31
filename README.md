@@ -21,7 +21,7 @@ BrightSide Developer is a TypeScript package designed to provide an easy-to-use 
 To install BrightSide Developer, simply run:
 
 ```bash
-npm install brightside-developer
+npm install bsdweb
 ```
 
 See full typedoc here: [TypeDoc](https://brightside-developer-docs.vercel.app)
@@ -33,7 +33,7 @@ See full typedoc here: [TypeDoc](https://brightside-developer-docs.vercel.app)
 Before using any of the BrightBase features, you need to initialize it with your Supabase URL and key.
 
 ```typescript
-import { initBrightBase } from 'brightside-developer'
+import { initBrightBase } from 'bsdweb'
 
 const SUPABASE_URL = 'https://your-supabase-url.co'
 const SUPABASE_ANON_KEY = 'your-anon-key'
@@ -49,7 +49,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import { BrightProvider } from 'brightside-developer'
+import { BrightProvider } from 'bsdweb'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -67,7 +67,7 @@ BrightBaseAuth provides methods for handling user authentication, including sign
 #### Example
 
 ```typescript
-import { BrightBaseAuth, useNavigate } from 'brightside-developer'
+import { BrightBaseAuth, useNavigate } from 'bsdweb'
 
 const auth = new BrightBaseAuth()
 
@@ -158,7 +158,7 @@ BrightWebTheme is a utility that helps manage theming in your web application. I
 #### Example
 
 ```typescript
-import { BrightWebTheme } from 'brightside-developer'
+import { BrightWebTheme } from 'bsdweb'
 
 // Initialize the theme
 BrightWebTheme.initializeTheme()
@@ -177,7 +177,7 @@ BrightWebTheme.mediaThemeEventListener()
 #### Example
 
 ```typescript
-import { wetToast } from 'brightside-developer'
+import { wetToast } from 'bsdweb'
 
 // Display a success toast
 wetToast('Todo added successfully!', { icon: '🎉' })
@@ -193,7 +193,7 @@ Here is an example of how you can use the various components provided by BrightS
 ```tsx
 import { Loader2, Trash } from 'lucide-react'
 import { Suspense, useState, useCallback } from 'react'
-import { BrightBaseCRUD, BrightBaseRealtime, initBrightBase, useSuspenseQuery, wetToast } from 'brightside-developer'
+import { BrightBaseCRUD, BrightBaseRealtime, initBrightBase, useSuspenseQuery, wetToast } from 'bsdweb'
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
